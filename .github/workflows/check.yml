@@ -1,0 +1,22 @@
+name: Проверка сервиса
+on: [push, workflow_dispatch]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Запуск контейнеров
+        run: docker compose up -d --build --wait
+      - name: Проверка модели
+        run: docker compose exec -T scorer python -m unittest discover -s tests -v
+      - name: Проверка потока
+        run: docker compose exec -T scorer python -m tests.smoke
+      - name: Проверка интерфейса
+        run: curl --fail http://localhost:8501/_stcore/health
+      - name: Логи
+        if: always()
+        run: docker compose logs --no-color
+      - name: Остановка
+        if: always()
+        run: docker compose down -v
