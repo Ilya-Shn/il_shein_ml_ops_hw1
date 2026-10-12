@@ -4,3 +4,4 @@ streamlit==1.49.1
 catboost==1.2.8
 numpy==1.26.4
 pandas==2.2.3
+pyarrow==25.0.1

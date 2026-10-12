@@ -10,6 +10,7 @@ class InterfaceTests(unittest.TestCase):
             page = AppTest.from_file("app/ui.py").run()
             page.button[0].click().run()
         self.assertFalse(page.exception)
+        self.assertFalse(page.error, [error.value for error in page.error])
         self.assertEqual(len(page.info), 2)
 
     def test_results_button(self):
@@ -19,6 +20,7 @@ class InterfaceTests(unittest.TestCase):
             page = AppTest.from_file("app/ui.py").run()
             page.button[0].click().run()
         self.assertFalse(page.exception)
+        self.assertFalse(page.error, [error.value for error in page.error])
         self.assertEqual(page.dataframe[0].value["transaction_id"].tolist(), ["test"])
         self.assertIn("Учтено транзакций: 3", page.caption[0].value)
 
